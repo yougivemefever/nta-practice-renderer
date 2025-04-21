@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/question-wise-analysis.css">
+    <style>
+        math {display:none;}
+  </style>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Register.StartupHook("NativeMML Jax Ready",function () {
+          document.getElementById("hide-math").disabled = true;
+        });
+  </script>
+
+    <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            messageStyle: "none",
+            tex2jax: { inlineMath: [["\\(","\\)"]] },
+            tex2jax: {preview: "none",
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true},
+            "HTML-CSS": { linebreaks: { automatic: true, width: "container" },availableFonts: ["TeX"],mtextFontInherit: true },
+            CommonHTML: { linebreaks: { automatic: true } }
+         });
+  </script>
+
+    <script type="text/javascript" src="../MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured"></script>
+</head>
+
+<div ng-app="embibeApp" ng-controller="appCtrl">
+    <div bind-mathml="0" class="question-modal__container ng-binding ng-scope" ng-click="vm.modalClick()" prevent-right-click="" style="visibility: visible;">
+        <div class="question-modal__left" ng-show="showData">
+            <div class="small_device__question-modal">
+                <div class="question-modal__left-content">
+                    <div class="no_video ng-scope" ng-if="!vm.attempt.videoAvailable">
+
+                        <div class="col-xs-12 no-padding">
+                            <div class="question_list questionBlk">
+                                <h3 class="question-modal__sub-heading cf">
+                                    <span class="grey">{{ques_no}}</span>
+                                    <p class="question_type">{{qtype}}</p>
+                                </h3>
+                                <p class="test-question__text panel-body para-answer_block" ng-if="question.category != 'Linked Comprehension' && question.category != 'Linked Comprehension Multiple Choice'" dynamic-data="question.body"></p>
+                                <p class="test-question__text" ng-if="question.category == 'Linked Comprehension' && question.category != 'Linked Comprehension Multiple Choice'" dynamic-data="extractParagraphFromComprehension(question.body)"  ng-class="{'comprehension-pra':isJeeAdv}"></p>
+                            </div>
+
+                            <div ng-if="question.category != 'Integer' && question.category != 'Subjective Numerical' && question.category != 'Linked Comprehension' && question.category != 'Linked Comprehension Multiple Choice' && question.category != 'Matrix'" class="col-xs-12 no-padding" id="answers_container">
+                                <div ng-class="{'selected_answer': ('{{answer.selected}}' == 'true') ,'correct_answer': ('{{answer.correct}}'== 'true')}" class="answer_panel answer_block {{locale}}" }}id="div_ans_1" ng-repeat="answer in question.answers" track by $index>
+                                    <div>
+                                        <span class="answer_choice_index">{{question_index[$index]}}</span>
+                                        <input type="hidden" id="ans_1"/>
+                                        <div class="answer_body" dynamic-data="answer.body"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="qun-link-comprehension" ng-class="{'comprehension-qn':isJeeAdv}" ng-if="question.category == 'Linked Comprehension' || question.category == 'Linked Comprehension Multiple Choice'" >
+<!--                                <p class="test-question__text panel-body para-answer_block" dynamic-data="extractParagraphFromComprehension(question.body)"></p>-->
+                                <p class="test-question__text panel-body para-answer_block" dynamic-data="extractQuestionForLinkComprehension(question.body)"></p>
+                                <div ng-class="{'selected_answer': ('{{answer.selected}}' == 'true') ,'correct_answer': ('{{answer.correct}}'== 'true') }" class="answer_panel answer_block {{locale}}" ng-repeat="answer in question.answers">
+                                    <span class="answer_choice_index" ng-bind="question_index[$index]"></span>
+                                    <div dynamic-data="answer.body"></div>
+                                </div>
+                            </div>
+
+                            <ul class="answer_panel answer_block matrix_block" ng-if="question.category == 'Matrix' && showIncorrectMatrix">
+                                <table class="table table-bordered table-striped" style="width: 25%;">
+                                    <tr>
+                                        <th>
+                                        <th ng-repeat="header in matrix_header_top"> {{header}}</th>
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="header in matrix_header_left">
+                                        <td>
+                                            <strong>{{header}}</strong>
+                                        </td>
+                                        <td ng-repeat="header2 in matrix_header_top">
+                                            <input name="matrix-answer" type="checkbox" ng-checked="MatrixAnswerSelected(header,header2)" class="{{question.question_code}}-seq" readonly>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <span class="feedback_matrix wrong_ans" ng-if="showIncorrectMatrix">{{your_answer}}</span>
+                            </ul>
+
+                            <ul class="answer_panel answer_block matrix_block" ng-if="question.category == 'Matrix'">
+                                <table class="table table-bordered table-striped" style="width: 25%;">
+                                    <tr>
+                                        <th>
+                                        <th ng-repeat="header in matrix_header_top"> {{header}}</th>
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="header in matrix_header_left">
+                                        <td>
+                                            <strong>{{header}}</strong>
+                                        </td>
+                                        <td ng-repeat="header2 in matrix_header_top">
+                                            <input name="matrix-answer" type="checkbox" ng-checked="isMatrixAnswerChecked(header,header2)" class="{{question.question_code}}-seq" readonly>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <span class="feedback_matrix correct_ans">{{correct}}r</span>
+                            </ul>
+
+                            <span  ng-if="question.category == 'Integer' || question.category == 'Subjective Numerical' " >
+                  <div class="integer-option-block panel-body ">
+                    <input class="integer_input" ng-model="integer_input" type="number" step="0.001" readonly ng-class="{'selected_answer': question['answers'][0].selected ,'correct_answer': question['answers'][0].correct}"/>
+                    <span id="feedback" ng-if="!isCorrect">{{correct}} {{question['answers'][0].body}}</span>
+                  </div>
+                </span>
+                        </div>
+
+                        <div ng-show="true" class="col-xs-12 no-padding">
+                            <div class="question_list explanationBlk">
+                                <h3 class="question-modal__sub-heading">
+                                    <p class="question_type">{{explanation}}</p>
+                                </h3>
+                                <div class="border-box">
+                                    <p dynamic-data="answer.explanation" ng-repeat="answer in question.answers"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="showConcepts" class="col-xs-12 no-padding">
+                            <div class="question_list key_concepts" ng-show="ques_concepts.concepts_data.length > 0">
+                                <h3 class="question-modal__sub-heading cf">
+                                    <p class="question_type">{{keyconcepts}}</p>
+                                </h3>
+                                <section>
+                                    <div class="report__content">
+                                        <div ng-repeat="concept in ques_concepts.concepts_data | orderBy:'order'" style="position: relative;">
+                                            <div class="question-modal__concept_name" ng-bind-html="concept.name" ng-show="concept.key_concept"><strong></strong></div>
+                                            <p dynamic-data="concept.description" ng-show="concept.key_concept"></p>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../js/angular-sanitize.min.js"></script>
+<script src="../js/question-wise-analysis.js"></script>
+
+<script type="text/javascript">
+  MathJax.Hub.Configured()
+  </script>
+
+</html>
