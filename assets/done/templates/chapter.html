@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/chapter.css">
+
+  <style>
+        math {display:none;}
+  </style>
+
+  <script type="text/x-mathjax-config">
+        MathJax.Hub.Register.StartupHook("NativeMML Jax Ready",function () {
+          document.getElementById("hide-math").disabled = true;
+        });
+  </script>
+
+
+  <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            menuSettings: {
+              collapsible: false,
+              autocollapse: false,
+              explorer: false
+            },
+            showMathMenu: false,
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            messageStyle: "none",
+            tex2jax: { inlineMath: [["\\(","\\)"]] },
+            tex2jax: {preview: "none",
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true},
+            "HTML-CSS": { linebreaks: { automatic: true, width: "container" },availableFonts: ["TeX"],mtextFontInherit: true },
+            CommonHTML: { linebreaks: { automatic: true } }
+         });
+  </script>
+
+  <script type="text/javascript" src="../MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured"></script>
+</head>
+
+<body oncopy="return false" oncut="return false" onpaste="return false">
+  <div ng-app="embibeApp" ng-controller="appCtrl">
+    <div class="col-xs-12 no-padding concept-modal__container">
+      <h3 class="concept-modal__heading" ng-class="{'concept-modal__container--red' : chapterwiseTab == 'chapterswrong' ,  'concept-modal__container--green' : chapterwiseTab == 'chaptersright'}">
+        {{chapterName}}
+      </h3>
+      <div class="concept-modal__concept concept-Border" ng-repeat="conceptData in concepts">
+        <h4 class="concept-modal__concept-title" ng-bind-html="conceptData.name"><strong></strong></h4>
+        <p class="concept-modal__concept-text" dynamic-data="conceptData.description"></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+  <script type="text/javascript" src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/angular.min.js"></script>
+  <script src="../js/angular-sanitize.min.js"></script>
+  <script src="../js/chapter.js"></script>
+
+  <script type="text/javascript">
+  MathJax.Hub.Configured()
+  </script>
+
+<script type="text/javascript">
+    $("body").on("contextmenu",function(e){
+        return false;
+    });
+    $('body').bind('cut copy paste', function (e) {
+        e.preventDefault();
+    });
+</script>
+
+  </html>

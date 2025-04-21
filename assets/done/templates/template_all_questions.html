@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+
+    <script type="text/javascript"
+            src="../js/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="../MathJax/MathJax.js?config=MML_HTMLorMML">
+    </script>
+
+    <link rel="stylesheet"
+          href="../css/bootstrap.min.css">
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            menuSettings: {
+              collapsible: false,
+              autocollapse: false,
+              explorer: false
+            },
+            showMathMenu: false,
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            messageStyle: "none",
+            tex2jax: { inlineMath: [["\\(","\\)"]] },
+            tex2jax: {preview: "none",
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true},
+            "HTML-CSS": { linebreaks: { automatic: true, width: "container" },availableFonts: ["TeX"],mtextFontInherit: true },
+            CommonHTML: { linebreaks: { automatic: true } }
+         });
+
+    </script>
+
+    <style>
+
+       body {
+          font-family: Roboto,sans-serif;
+          color: #000000;
+        }
+
+        .MathJax{
+            outline:none;
+        }
+
+        .no-padding
+        {
+            padding:0px;
+        }
+
+        .question_item {
+            padding: 15px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-align: left;
+            color: #000000;
+            border-bottom: solid 1px rgba(233,233,233,0.95);
+        }
+
+        .question_number {
+            float: left;
+            height: auto;
+            display: inline;
+        }
+
+        .question_data_container {
+            margin-left: 40px;
+        }
+
+        .question_type {
+            padding-top: 5px;
+            font-size:15px;
+        }
+
+        .section {
+          background: transparent;
+          font-size: 15px;
+          font-weight: bold;
+          line-height: 1.27;
+          letter-spacing: 1.2px;
+          color: #ffffff;
+        }
+
+        .question-modal__sub-heading {
+            margin: 0px 0px;
+            padding:10px 15px;
+            text-transform: uppercase;
+            background-color: #89a8ac;
+        }
+
+
+    </style>
+
+    <script type="text/javascript">        
+        var sections = [];
+        var questionSetItems = [];
+        var questions = [];
+
+        var loadQuestion = function() {
+            var output = document.getElementById('questions_container');
+
+            sections = JSON.parse(window.CommonAndroidAPI.getSections());
+            var locale = window.CommonAndroidAPI.getLocale();
+            var questionIndexString = "Q ";
+            if(locale == "hi"){
+                questionIndexString = "प्र ";
+            }
+
+            for(var i=0; i<sections.length; i++) {
+                var sectionId = sections[i].sectionId;
+                var sectionName = sections[i].sectionName;
+
+                var sectionDiv = document.createElement("div");
+                    sectionDiv.setAttribute("class","section question-modal__sub-heading");
+                    var sectionHeading = "Section: " + sectionName;
+                    if(locale == "hi"){
+                        if(sectionName == "Chemistry"){
+                            sectionHeading = "सेक्शन: रसायन विज्ञान";
+                        }else if(sectionName == "Biology"){
+                            sectionHeading = "सेक्शन: जीव विज्ञान";
+                        }else if(sectionName == "Mathematics"){
+                            sectionHeading = "सेक्शन: गणित";
+                        }else if(sectionName == "Physics"){
+                            sectionHeading = "सेक्शन: भौतिक विज्ञान";
+                        }
+                    }
+                    sectionDiv.innerHTML = sectionHeading;
+                    output.appendChild(sectionDiv);
+
+                questionSetItems = JSON.parse(window.CommonAndroidAPI.getQuestionSet(sectionId));
+
+                for(var j=0; j<questionSetItems.length; j++) {
+                    questions=questionSetItems[j];
+                    if(!document.getElementById(questions['id'] + '_' + j)) {
+                        var questionItem = document.createElement("div");
+                        questionItem.setAttribute("class","question_item");
+
+                        var questionNumber = document.createElement("div");
+                        questionNumber.setAttribute("class","question_number");
+                        questionNumber.innerHTML = questionIndexString + (j + 1) + ") "
+                        questionItem.appendChild(questionNumber);
+
+                        var questionData = document.createElement("div");
+                        questionData.setAttribute("class","question_data_container");
+
+                        var questionBody = document.createElement("div");
+                        questionBody.setAttribute("class","question_body");
+                        questionBody.innerHTML = questions['body'];
+                        questionData.appendChild(questionBody);
+
+                        var qtype =  questions['category'];
+                        var questionTypeString = "Question Type: " + qtype;
+                        if(locale == "hi"){
+                        if(qtype == "Single Choice"){
+                            questionTypeString = "प्रश्न का प्रकार : एकल विकल्पी"
+                        }else if(qtype == "Subjective Numerical"){
+                            questionTypeString = "प्रश्न का प्रकार : वविषयात्मक आंकिक"
+                        }else if(qtype == "Integer"){
+                            questionTypeString = "प्रश्न का प्रकार: पूर्णांक"
+                        }
+                        }
+                        var questionType = document.createElement("div");
+                        questionType.setAttribute("class","question_type");
+                        questionType.innerHTML = questionTypeString;
+                        questionData.appendChild(questionType);
+
+                        questionItem.appendChild(questionData);
+
+                        output.appendChild(questionItem);                    
+                    }
+                }                
+            }
+        }
+
+    	$(document).ready(function(){
+    		loadQuestion();
+	    });
+
+
+    </script>
+
+</head>
+
+<body oncopy="return false" oncut="return false" onpaste="return false">
+<div class="container-fluid">
+    <div class="row question_body_panel">
+        <div class="col-xs-12 no-padding">
+            <div id="questions_container">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+    $("body").on("contextmenu",function(e){
+        return false;
+    });
+
+    $('body').bind('cut copy paste', function (e) {
+        e.preventDefault();
+    });
+
+</script>
+</html>

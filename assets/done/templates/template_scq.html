@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+
+    <script type="text/javascript"
+            src="../js/jquery.min.js">
+    </script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Register.StartupHook("NativeMML Jax Ready",function () {
+          document.getElementById("hide-math").disabled = true;
+        });
+
+    </script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Register.StartupHook("End Jax",function () {
+          var BROWSER = MathJax.Hub.Browser;
+
+          var canUseMML = (BROWSER.isFirefox && BROWSER.versionAtLeast("1.5")) ||
+                          (BROWSER.isMSIE    && BROWSER.hasMathPlayer) ||
+                          (BROWSER.isSafari  && BROWSER.versionAtLeast("5.0")) ||
+                          (BROWSER.isOpera   && BROWSER.versionAtLeast("9.52") &&
+                                               !BROWSER.versionAtLeast("14.0"));
+
+          var CONFIG = MathJax.Hub.CombineConfig("MMLorHTML",{
+            prefer: {
+              MSIE:"MML", Firefox:"HTML", Opera:"HTML", Chrome:"HTML", Safari:"HTML",
+              other:"HTML"
+            }
+          });
+
+          var jax = CONFIG.prefer[BROWSER] || CONFIG.prefer.other;
+          if (jax === "HTML") jax = "HTML-CSS"; else if (jax === "MML")  jax = "NativeMML";
+          if (jax === "NativeMML" && !canUseMML) jax = CONFIG.prefer.other;
+          return MathJax.Hub.setRenderer(jax);
+        });
+    </script>
+
+    <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            menuSettings: {
+              collapsible: false,
+              autocollapse: false,
+              explorer: false
+            },
+            showMathMenu: false,
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX","output/CommonHTML"],
+            jax: ["output/SVG"],
+            messageStyle: "none",
+            tex2jax: {preview: "none",
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true},
+            "HTML-CSS": { linebreaks: { automatic: true, width: "container" },availableFonts: ["TeX"],imageFont: "TeX",mtextFontInherit: true },
+            CommonHTML: { linebreaks: { automatic: true } }
+         });
+    </script>
+
+    <script type="text/javascript" src="../MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+    <script src="../js/bootstrap.min.js"></script>
+
+    <style>
+
+        @font-face {
+            font-family: MyFont;
+            src: url("file:///android_asset/fonts/helvetica-bold.ttf")
+        }
+
+        body {
+            font-size: 2em;
+            font-family: MyFont;
+            font-size: medium;
+            text-align: justify;
+        }
+
+        math {display:none;}
+
+        .low-padding {
+            padding: 0px 7px;
+          }
+
+        .no-padding {
+            padding:0px;
+        }
+
+        .question_container
+        {
+              box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.27);
+        }
+
+        .answer_block 
+        {
+            border-top: solid 1px rgba(233,233,233,0.95);
+            border-bottom: solid 1px rgba(233,233,233,0.95);
+            padding: 8px 24px 20px 16px;
+            font-size: 16px;
+            font-family: Roboto , sans-serif;
+            line-height: 1.6;
+            letter-spacing: 0.9px;
+            text-align: left;
+            color: #000000;
+        }
+        .MathJax{
+            outline:none;
+        }
+        .MathJax .math {
+            display: -webkit-inline-box !important;
+        }
+		.question_panel{
+			font-size: 20px;
+    		font-weight: 300;
+    		line-height: 22px;
+		}
+		.question_body_panel{
+			height: auto;
+    		min-height: 40px;
+		}
+
+        .question_body_panel_no_data
+        {
+            padding: 10px;
+            text-align: center;
+        }
+
+		.question_index_container{
+			padding: 10px 15px;
+			font-size: 16px;
+			font-weight: bold;
+		}
+		.question_type_container{
+			padding: 10px 15px;
+			font-size: 16px;
+			font-weight: bold;
+		}
+		.answer_panel{
+            padding: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            letter-spacing: 0.8px;
+            text-align: left;
+            color: #000000;
+		}
+
+		.answer_choice_index{
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin-right: 15px;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 21px;
+                background-color: #d3d3d3;
+                float: left;
+                font-family: Roboto , sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: -0.2px;
+                color: #ffffff;
+		}
+		.selected_answer{
+			background-color: #d4f3fe;
+		}
+
+        .selected_answer .answer_choice_index,
+        .correct_answer .answer_choice_index,
+        .wrong_answer .answer_choice_index
+        {
+            background-color: #4f4f4f;
+        }
+
+		.correct_answer{
+			background-color: rgba(41, 185, 154,0.27);
+		}
+
+        .wrong_answer{
+            background-color: rgba(241, 102, 97,0.27);
+        }
+
+        .answer_block.correct_answer:after {
+            content: 'Correct Answer';
+            color: #29b99a;
+            margin-left: 37px;
+            font-size: 16px;
+            display: block;
+            text-align: left;
+
+        }
+
+        .answer_block.wrong_answer:after {
+            content: 'Your Answer';
+            margin-left: 37px;
+            color: #f16661;
+            font-size: 16px;
+            display: block;
+            text-align: left;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+        var questions = [];
+
+        var clearSelections = function(){
+            $('.answer_panel').removeClass('selected_answer');
+        }
+
+        var setActive = function(active) {
+            document.title = active;
+        }
+
+        var setData = function(json){
+            $("#no_data_container").hide();
+            $("#question_body_container").show();
+
+            questions = json;
+            if (true) {
+               	$("#question_id").value = questions['id'];
+                $("#question_body").html(questions['body']);
+
+                $("#ans_1").val(questions['answers'][0]['code']);
+                $('#ans_1').next().html(questions['answers'][0]['body']);
+
+                $("#ans_2").val(questions['answers'][1]['code']);
+                $('#ans_2').next().html(questions['answers'][1]['body']);
+
+                $("#ans_3").val(questions['answers'][2]['code']);
+                $('#ans_3').next().html(questions['answers'][2]['body']);
+
+                $("#ans_4").val(questions['answers'][3]['code']);
+                $('#ans_4').next().html(questions['answers'][3]['body']);
+
+
+                var selectedAnswer = window.CommonAndroidAPI.getAnswer();
+
+                $('.answer_panel').removeClass('selected_answer');
+                $('.answer_panel').removeClass('correct_answer');
+                $('.answer_panel').removeClass('wrong_answer');
+
+                $(".answer_panel.answer_block .answer-status").remove();
+
+                for(var i=0;i<questions['answers'].length;i++) {
+                    if(questions['answers'][i]['code'] == selectedAnswer) {    
+                        var index = i+1;
+                        var selector = "div_ans_" + index;                
+                        $("#"+selector).addClass('selected_answer');
+                    }
+                }
+            }
+
+            setTimeout(function () {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            });
+        }
+
+        var setPracticeData = function(json){
+            $("#no_data_container").hide();
+            $("#question_body_container").show();
+
+            questions = json;
+                $("#question_id").value = questions['id'];
+                $("#question_body").html(questions['body']);
+
+                $("#ans_1").val(questions['answers'][0]['code']);
+                $('#ans_1').next().html(questions['answers'][0]['body']);
+
+                $("#ans_2").val(questions['answers'][1]['code']);
+                $('#ans_2').next().html(questions['answers'][1]['body']);
+
+                $("#ans_3").val(questions['answers'][2]['code']);
+                $('#ans_3').next().html(questions['answers'][2]['body']);
+
+                $("#ans_4").val(questions['answers'][3]['code']);
+                $('#ans_4').next().html(questions['answers'][3]['body']);
+
+
+                var selectedAnswer = window.CommonAndroidAPI.getAnswer();
+
+                $('.answer_panel').removeClass('selected_answer');
+                $('.answer_panel').removeClass('correct_answer');
+                $('.answer_panel').removeClass('wrong_answer');
+
+                $(".answer_panel.answer_block .answer-status").remove();
+
+                for(var i=0;i<questions['answers'].length;i++) {
+                    if(questions['answers'][i]['code'] == selectedAnswer) {    
+                        var index = i+1;
+                        var selector = "div_ans_" + index;                
+                        $("#"+selector).addClass('selected_answer');
+                    }
+                }
+
+                if (selectedAnswer != null) {
+                    submitSelection();
+                }
+
+            setTimeout(function () {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            });
+        }
+
+        var submitSelection = function(){
+
+            var selectedAnswer = window.CommonAndroidAPI.getAnswer();
+            var correctIndex = 0;
+            var selectedIndex = 0;
+            for(var i=0;i<questions.answers.length;i++) {
+                if(questions.answers[i].correct === true) {
+                    correctIndex = i+1;
+                }
+                if(questions.answers[i].code === selectedAnswer) {
+                    selectedIndex = i+1;
+                }
+            }
+
+            if(correctIndex === selectedIndex) {
+                var selector = "div_ans_" + correctIndex;
+                $("#"+selector).addClass('correct_answer');
+                return;
+            } else {
+                var selector = "div_ans_" + correctIndex;
+                $("#"+selector).addClass('correct_answer');
+
+                selector = "div_ans_" + selectedIndex;
+                $("#"+selector).addClass('wrong_answer');
+
+            }
+        }
+
+        var loadQuestion = function(){
+        }
+
+        var reset = function(){
+            $("#no_data_container").show();
+            $("#question_body_container").hide();
+        }
+
+    	$(document).ready(function(){
+    		loadQuestion();
+	    });
+
+        $(function(){
+
+		    $('.answer_panel').click(function(event)
+		    {
+                if($('.answer_panel').hasClass('correct_answer') || $('.answer_panel').hasClass('wrong_answer'))
+                {
+                    //do nothing
+                }
+                else
+                {
+                    $('.answer_panel').removeClass('selected_answer');
+                    $(this).addClass('selected_answer');
+                    var ansVal = $(this).find('input:hidden').val()
+                    window.CommonAndroidAPI.selectAnswer(ansVal);
+                    window.CommonAndroidAPI.setAnswer(ansVal);
+                }
+		    });
+        });
+
+
+
+
+    </script>
+
+</head>
+
+<body oncopy="return false" oncut="return false" onpaste="return false">
+<div class="question_container clearfix" id="question_body_container">
+    <div class="question_body_panel">
+        <div class="col-xs-12 no-padding">
+            <div class="panel-body answer_block" id="question_body">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 no-padding" id="answers_container">
+        <div class="answer_panel answer_block correct_answer" id="div_ans_1">
+            <span class="answer_choice_index">A</span>
+            <input type="hidden" id="ans_1"/>
+            <div class="answer_body"></div>
+        </div>
+        <div class="answer_panel answer_block wrong_answer" id="div_ans_2">
+            <span class="answer_choice_index">B</span>
+            <input type="hidden" id="ans_2"/>
+            <div class="answer_body"></div>
+        </div>
+        <div class="answer_panel answer_block" id="div_ans_3">
+            <span class="answer_choice_index">C</span>
+            <input type="hidden" id="ans_3"/>
+            <div class="answer_body"></div>
+        </div>
+        <div class="answer_panel answer_block" id="div_ans_4">
+            <span class="answer_choice_index">D</span>
+            <input type="hidden" id="ans_4"/>
+            <div class="answer_body"></div>
+        </div>
+    </div>
+</div>
+<div class="question_container clearfix" id="no_data_container">
+    <div class="question_body_panel_no_data">
+        <div class="col-xs-12 no-padding">
+            Data not available for this question. Please click next.
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+
+    $("body").on("contextmenu",function(e){
+        return false;
+    });
+
+    $('body').bind('cut copy paste', function (e) {
+        e.preventDefault();
+    });
+
+</script>
+
+</html>

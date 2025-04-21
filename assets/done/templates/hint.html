@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+
+    <style>
+        body {
+          font-size: 2em;
+        }
+    </style>
+
+    <script type="text/javascript"
+            src="../js/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+            src="../MathJax/MathJax.js?config=MML_HTMLorMML">
+    </script>
+
+    <link rel="stylesheet"
+          href="../css/bootstrap.min.css">
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script type="text/x-mathjax-config">
+    	MathJax.Hub.Config({
+    	    menuSettings: {
+              collapsible: false,
+              autocollapse: false,
+              explorer: false
+            },
+            showMathMenu: false,
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            messageStyle: "none",
+            tex2jax: { inlineMath: [["\\(","\\)"]] },
+            tex2jax: {preview: "none",
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true},
+            "HTML-CSS": { linebreaks: { automatic: true, width: "container" },availableFonts: ["TeX"], mtextFontInherit: true },
+            CommonHTML: { linebreaks: { automatic: true } }
+         });
+    </script>
+
+    <style>
+        .MathJax{
+            outline:none;
+        }
+         .MathJax .math {
+            display: -webkit-inline-box !important;
+        }
+		.hint_panel{
+			font-size: 20px;
+    		font-weight: 300;
+    		line-height: 22px;
+		}
+		.hint_body_panel{
+			height: auto;
+    		min-height: 40px;
+		}
+		.hint_index_container{
+			padding: 10px 15px;
+			font-size: 16px;
+			font-weight: bld;
+		}
+		.hint_type_container{
+			padding: 10px 15px;
+			font-size: 16px;
+			font-weight: bold;
+		}
+		.answer_panel{
+			margin-bottom: 10px;
+			font-size: 16px;
+    		color: #7a7a7a;
+    		padding: 10px;
+    		cursor: pointer;
+		}
+		.answer_choice_index{
+			display: inline-block;
+		    width: 28px;
+		    height: 28px;
+		    margin-right: 15px;
+		    border-radius: 50%;
+		    text-align: center;
+		    color: #7a7a7a;
+		    line-height: 26px;
+		    background-color: #fff;
+		    float: left;
+		    border: 2px solid #b9b9b9;
+		    font-size: 18px;
+		}
+		.selected_answer{
+			background-color: rgba(154,220,244,0.4);
+		}
+    </style>
+
+    <script type="text/javascript">
+
+        var setActive = function(active) {
+            document.title = active;
+        }
+
+    	$(document).ready(function(){
+    		loadHint();
+	    });
+
+        var loadHint = function(){
+            debugger;
+        	var hint = window.CommonAndroidAPI.getHint();
+            if (true) {
+                $("#hint_body").html(hint);
+            }
+        }
+    </script>
+    
+</head>
+
+<body oncopy="return false" oncut="return false" onpaste="return false">
+<div class="container-fluid">
+    <div class="row hint_body_panel">
+        <div class="col-xs-12">
+                <div class="panel-body" id="hint_body">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script type="text/javascript">
+
+    $("body").on("contextmenu",function(e){
+        return false;
+    });
+
+    $('body').bind('cut copy paste', function (e) {
+        e.preventDefault();
+    });
+
+</script>
+</html>
