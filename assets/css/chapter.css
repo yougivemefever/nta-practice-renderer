@@ -1,0 +1,76 @@
+body {
+    font-family: helvetica, arial, sans serif !important;
+    background: #fff !important;
+}
+
+.concept-modal__container {
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    padding: 20px;
+    overflow: auto;
+}
+
+.concept-modal__container h2, .concept-modal__container h3 {
+    font-weight: 100;
+}
+.concept-modal__container--green {
+    color: #29d366;
+    font-weight: 100;
+}
+.concept-modal__heading {
+    margin-top: 0;
+}
+.MathJax .math {
+            display: -webkit-inline-box !important;
+        }
+.concept-modal__container .concept-modal__concept-title {
+    font-weight: bold;
+}
+.concept-modal__container h2, .concept-modal__container h3 {
+    font-weight: 100;
+}
+.concept-modal__concept-title {
+    margin-bottom: 5px;
+}
+.concept-modal__concept-correctness {
+    font-size: 14px;
+}
+.concept-modal__concept-text {
+    margin-left: 20px;
+}
+
+.concept-modal__container--red {
+    color: #f15f54;
+    font-weight: 100;
+}
+
+.no-padding{
+    padding:0px;
+}
+
+.no_list_padding
+{
+    list-style-type: none;
+    -webkit-margin-before: 0;
+    -webkit-padding-start: 0;
+}
+
+.concept-Border
+{
+    padding: 5px 20px;
+    box-shadow: 0px 1px 1px 1px rgba(190, 190, 190, 0.4) inset;
+    margin-bottom: 20px;
+}
+
+.comprehension-pra{
+  display:inline-block;
+  width:45%;
+  vertical-align:top;
+  margin-right: 9%;
+}
+.comprehension-qn{
+  display:inline-block;
+  width:45%;
+  vertical-align:top;
+}
