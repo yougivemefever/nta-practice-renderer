@@ -1,0 +1,17 @@
+[
+  {
+    "question": "Which of the following is a scalar quantity?",
+    "options": ["Velocity", "Force", "Work", "Acceleration"],
+    "answer": "Work"
+  },
+  {
+    "question": "What is the unit of electrical resistance?",
+    "options": ["Ohm", "Ampere", "Volt", "Watt"],
+    "answer": "Ohm"
+  },
+  {
+    "question": "Which hormone is responsible for the fight or flight response?",
+    "options": ["Insulin", "Adrenaline", "Estrogen", "Thyroxine"],
+    "answer": "Adrenaline"
+  }
+]

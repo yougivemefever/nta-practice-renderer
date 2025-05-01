@@ -1,0 +1,26 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f4;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+}
+body.dark {
+  background: #121212;
+  color: #f4f4f4;
+}
+.header {
+  padding: 1em;
+  background: #6200ea;
+  color: white;
+  text-align: center;
+}
+.nav-buttons {
+  margin: 1em;
+  text-align: center;
+}
+button {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+}
