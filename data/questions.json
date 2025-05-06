@@ -1,0 +1,17 @@
+[
+  {
+    "q": "Which of the following is not a noble gas?",
+    "options": ["Helium", "Neon", "Oxygen", "Argon"],
+    "answer": 2
+  },
+  {
+    "q": "What is the powerhouse of the cell?",
+    "options": ["Nucleus", "Mitochondria", "Ribosome", "Endoplasmic Reticulum"],
+    "answer": 1
+  },
+  {
+    "q": "Which law explains the relationship between pressure and volume of a gas?",
+    "options": ["Boyle’s Law", "Charles’s Law", "Avogadro’s Law", "Dalton’s Law"],
+    "answer": 0
+  }
+]
